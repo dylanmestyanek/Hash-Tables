@@ -46,50 +46,47 @@ class HashTable:
     def insert(self, key, value):
         '''
         Store the value with the given key.
-
         Hash collisions should be handled with Linked List Chaining.
-
-        Fill this in.
         '''
-        pass
-
+        pair = LinkedPair(key, value)
+        index = self._hash_mod(key)
+        print("index", index, "key", key)
+        self.storage[index] = pair
 
 
     def remove(self, key):
         '''
         Remove the value stored with the given key.
-
         Print a warning if the key is not found.
-
-        Fill this in.
         '''
-        pass
+        for i in range(len(self.storage)):
+            if self.storage[i]:
+                if self.storage[i].key == key:
+                    self.storage = self.storage[0 : i] + self.storage[i + 1]
+
 
 
     def retrieve(self, key):
         '''
         Retrieve the value stored with the given key.
-
         Returns None if the key is not found.
-
-        Fill this in.
         '''
-        pass
-
+        for i in range(len(self.storage)):
+            if self.storage[i]:
+                if self.storage[i].key == key:
+                    return self.storage[i].value
 
     def resize(self):
         '''
         Doubles the capacity of the hash table and
         rehash all key/value pairs.
-
-        Fill this in.
         '''
         pass
 
 
 
 if __name__ == "__main__":
-    ht = HashTable(2)
+    ht = HashTable(3)
 
     ht.insert("line_1", "Tiny hash table")
     ht.insert("line_2", "Filled beyond capacity")
@@ -103,15 +100,15 @@ if __name__ == "__main__":
     print(ht.retrieve("line_3"))
 
     # Test resizing
-    old_capacity = len(ht.storage)
-    ht.resize()
-    new_capacity = len(ht.storage)
+    # old_capacity = len(ht.storage)
+    # ht.resize()
+    # new_capacity = len(ht.storage)
 
-    print(f"\nResized from {old_capacity} to {new_capacity}.\n")
+    # print(f"\nResized from {old_capacity} to {new_capacity}.\n")
 
     # Test if data intact after resizing
-    print(ht.retrieve("line_1"))
-    print(ht.retrieve("line_2"))
-    print(ht.retrieve("line_3"))
+    # print(ht.retrieve("line_1"))
+    # print(ht.retrieve("line_2"))
+    # print(ht.retrieve("line_3"))
 
     print("")

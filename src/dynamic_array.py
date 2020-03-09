@@ -5,7 +5,7 @@ class DynamicArray:
         self.count = 0
         self.storage = [None] * self.capacity
 
-    def insert(self, index, value):\
+    def insert(self, index, value):
         # make sure we have open space
         if self.count >= self.capacity:
             self.double_size()
