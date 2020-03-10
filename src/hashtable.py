@@ -117,7 +117,14 @@ class HashTable:
         Doubles the capacity of the hash table and
         rehash all key/value pairs.
         '''
-        pass
+
+        self.capacity *= 2
+        old_storage = [None] * self.capacity
+
+        for i in range(len(self.storage)):
+            old_storage[i] = self.storage[i]
+        
+        self.storage = old_storage
 
 
 if __name__ == "__main__":
