@@ -52,7 +52,8 @@ class HashTable:
         if self.storage[index]:
             pair.next = self.storage[index]
             self.storage[index] = pair
-            current_pair = pair
+
+            current_pair = self.storage[index]
 
             while current_pair:
                 current_pair = current_pair.next
@@ -64,27 +65,27 @@ class HashTable:
         Remove the value stored with the given key.
         Print a warning if the key is not found.
         '''
-        for i in range(self.capacity):
-            print("------BOOGERS-------", i)
-            print(len(self.storage))
-            item = self.storage[i]
+        index = self._hash_mod(key)
+        item = self.storage[index]
 
-            if item:
-                print("ENTERED LOOP READY TO REMOVE")
-                print("HERES THE CURRENT ITEM", item.key, item.value)
-                if item.key == key:
-                    print("SHOULDNT HIT THIS")
-                    self.storage = self.storage[0 : i] + self.storage[i + 1:]
-                elif item.next:
-                    print("SHOULD ENTER THIS")
-                    current_pair = item
-                    while current_pair:
-                        print("HERES THE CURRENT ITEM", current_pair.value, current_pair.key)
-                        if current_pair.key == key:
-                            current_pair.key = None
-                            current_pair.value = None
-                            current_pair.next = None
-                        current_pair = current_pair.next
+        if item:
+            if item.next:
+                current_pair = item
+
+                while current_pair:
+                    if current_pair.key == key:
+                        current_pair.key = None
+                        current_pair.value = None
+                        item = current_pair.next
+                        current_pair.next = None
+                        
+                    current_pair = current_pair.next
+            else:
+                if item:
+                    self.storage[index] = None
+
+        else:
+            print("That item don't exist dudeman")
 
     def retrieve(self, key):
         '''
@@ -93,7 +94,6 @@ class HashTable:
         '''
         index = self._hash_mod(key)
         item = self.storage[index]
-
         # If the current item is not None
         if item:
             # If 'pair' key is equal to requested key, return the 'pair' value
@@ -116,7 +116,6 @@ class HashTable:
         Doubles the capacity of the hash table and
         rehash all key/value pairs.
         '''
-
         self.capacity *= 2
         old_storage = self.storage
         self.storage = [None] * self.capacity
@@ -140,8 +139,7 @@ if __name__ == "__main__":
     ht.insert("key-5", "val-5")
     ht.insert("key-6", "val-6")
     ht.insert("key-7", "val-7")
-    # ht.insert("key-8", "val-8")
-    # ht.insert("key-9", "val-9")
+    ht.insert("key-8", "val-8")
     return_value = ht.retrieve("key-0")
     print("YOUR RETUR NVALUE", return_value, "\n")
     return_value = ht.retrieve("key-1")
@@ -158,38 +156,43 @@ if __name__ == "__main__":
     print("YOUR RETUR NVALUE", return_value, "\n")
     return_value = ht.retrieve("key-7")
     print("YOUR RETUR NVALUE", return_value, "\n")
-    ht.resize()
-    print("\n\n")
+    return_value = ht.retrieve("key-8")
+    print("YOUR RETUR NVALUE", return_value, "\n")
+    
+    ht.remove("key-8")
+    ht.remove("key-7")
+    ht.remove("key-6")
+    ht.remove("key-5")
+    ht.remove("key-4")
+    ht.remove("key-3")
+    ht.remove("key-2")
+    ht.remove("key-1")
+    ht.remove("key-0")
+
     return_value = ht.retrieve("key-0")
-    print("YOUR RETUR NVALUE", return_value, "\n")
+    print("RETURN VALUE", return_value)
     return_value = ht.retrieve("key-1")
-    print("YOUR RETUR NVALUE", return_value, "\n")
+    print("RETURN VALUE", return_value)
     return_value = ht.retrieve("key-2")
-    print("YOUR RETUR NVALUE", return_value, "\n")
+    print("RETURN VALUE", return_value)
     return_value = ht.retrieve("key-3")
-    print("YOUR RETUR NVALUE", return_value, "\n")
+    print("RETURN VALUE", return_value)
     return_value = ht.retrieve("key-4")
-    print("YOUR RETUR NVALUE", return_value, "\n")
+    print("RETURN VALUE", return_value)
     return_value = ht.retrieve("key-5")
-    print("YOUR RETUR NVALUE", return_value, "\n")
+    print("RETURN VALUE", return_value)
     return_value = ht.retrieve("key-6")
-    print("YOUR RETUR NVALUE", return_value, "\n")
+    print("RETURN VALUE", return_value)
     return_value = ht.retrieve("key-7")
-    print("YOUR RETUR NVALUE", return_value, "\n")
-    # return_value = ht.retrieve("key-8")
-    # print("YOUR RETUR NVALUE", return_value, "\n")
-    # ht.remove("key-7")
-    # print("BOOGER", ht.retrieve("key-8"))
-    # Test resizing
+    print("RETURN VALUE", return_value)
+    return_value = ht.retrieve("key-8")
+    print("RETURN VALUE", return_value)
+    
+    # # Test resizing
     # old_capacity = len(ht.storage)
     # ht.resize()
     # new_capacity = len(ht.storage)
 
     # print(f"\nResized from {old_capacity} to {new_capacity}.\n")
 
-    # Test if data intact after resizing
-    # print(ht.retrieve("line_1"))
-    # print(ht.retrieve("line_2"))
-    # print(ht.retrieve("line_3"))
-
-    print("")
+    # print("")
