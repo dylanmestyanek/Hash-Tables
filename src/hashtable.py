@@ -68,21 +68,21 @@ class HashTable:
         index = self._hash_mod(key)
         item = self.storage[index]
 
+        # If item exists...
         if item:
+            # If it is part of a linked list, loop through the pairs, until you find the matching `key`
             if item.next:
                 current_pair = item
 
                 while current_pair:
                     if current_pair.key == key:
-                        current_pair.key = None
-                        current_pair.value = None
+                        # Remove pointers
                         item = current_pair.next
                         current_pair.next = None
-                        
                     current_pair = current_pair.next
             else:
-                if item:
-                    self.storage[index] = None
+                # If it's not part of a linked list, set the value to None
+                self.storage[index] = None
 
         else:
             print("That item don't exist dudeman")
