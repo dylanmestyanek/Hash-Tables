@@ -20,7 +20,6 @@ class HashTable:
     def _hash(self, key):
         '''
         Hash an arbitrary key and return an integer.
-
         You may replace the Python hash with DJB2 as a stretch goal.
         '''
         return hash(key)
@@ -29,7 +28,6 @@ class HashTable:
     def _hash_djb2(self, key):
         '''
         Hash an arbitrary key using DJB2 hash
-
         OPTIONAL STRETCH: Research and implement DJB2
         '''
         pass
@@ -55,13 +53,11 @@ class HashTable:
             pair.next = self.storage[index]
             self.storage[index] = pair
             current_pair = pair
-            print("THIS IS THE LOOP FOR INDEX:", index)
+
             while current_pair:
-                print(current_pair.key, current_pair.value)
                 current_pair = current_pair.next
         else:
             self.storage[index] = pair
-            print("INSERTED", key, "AT", index)
 
     def remove(self, key):
         '''
@@ -95,21 +91,24 @@ class HashTable:
         Retrieve the value stored with the given key.
         Returns None if the key is not found.
         '''
-        for i in range(self.capacity):
-            item = self.storage[i]
-            # If the current item is not None
-            if item:
-                # If 'pair' key is equal to requested key, return the 'pair' value
-                if item.key == key:
-                    return item.value
-                # If there is multiple pairs stored at the index, loop through them, and find the one requested
-                elif item.next:
-                    current_pair = item
+        index = self._hash_mod(key)
+        item = self.storage[index]
 
-                    while current_pair:
-                        if current_pair.key == key:
-                            return current_pair.value
-                        current_pair = current_pair.next
+        # If the current item is not None
+        if item:
+            # If 'pair' key is equal to requested key, return the 'pair' value
+            if item.key == key:
+                return item.value
+            # If there is multiple pairs stored at the index, loop through them, and find the one requested
+            elif item.next:
+                current_pair = item
+
+                while current_pair:
+                    if current_pair.key == key:
+                        return current_pair.value
+                    current_pair = current_pair.next
+        else:
+            return None
         
 
     def resize(self):
@@ -119,12 +118,15 @@ class HashTable:
         '''
 
         self.capacity *= 2
-        old_storage = [None] * self.capacity
+        old_storage = self.storage
+        self.storage = [None] * self.capacity
 
-        for i in range(len(self.storage)):
-            old_storage[i] = self.storage[i]
-        
-        self.storage = old_storage
+        for pair in old_storage:
+            current_pair = pair
+
+            while current_pair:
+                self.insert(current_pair.key, current_pair.value)
+                current_pair = current_pair.next        
 
 
 if __name__ == "__main__":
@@ -140,7 +142,24 @@ if __name__ == "__main__":
     ht.insert("key-7", "val-7")
     # ht.insert("key-8", "val-8")
     # ht.insert("key-9", "val-9")
-
+    return_value = ht.retrieve("key-0")
+    print("YOUR RETUR NVALUE", return_value, "\n")
+    return_value = ht.retrieve("key-1")
+    print("YOUR RETUR NVALUE", return_value, "\n")
+    return_value = ht.retrieve("key-2")
+    print("YOUR RETUR NVALUE", return_value, "\n")
+    return_value = ht.retrieve("key-3")
+    print("YOUR RETUR NVALUE", return_value, "\n")
+    return_value = ht.retrieve("key-4")
+    print("YOUR RETUR NVALUE", return_value, "\n")
+    return_value = ht.retrieve("key-5")
+    print("YOUR RETUR NVALUE", return_value, "\n")
+    return_value = ht.retrieve("key-6")
+    print("YOUR RETUR NVALUE", return_value, "\n")
+    return_value = ht.retrieve("key-7")
+    print("YOUR RETUR NVALUE", return_value, "\n")
+    ht.resize()
+    print("\n\n")
     return_value = ht.retrieve("key-0")
     print("YOUR RETUR NVALUE", return_value, "\n")
     return_value = ht.retrieve("key-1")
@@ -159,7 +178,7 @@ if __name__ == "__main__":
     print("YOUR RETUR NVALUE", return_value, "\n")
     # return_value = ht.retrieve("key-8")
     # print("YOUR RETUR NVALUE", return_value, "\n")
-    ht.remove("key-7")
+    # ht.remove("key-7")
     # print("BOOGER", ht.retrieve("key-8"))
     # Test resizing
     # old_capacity = len(ht.storage)
